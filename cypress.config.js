@@ -5,6 +5,12 @@ dotenv.config();
 
 module.exports = defineConfig({
   reporter: 'cypress-mochawesome-reporter',
+  reporterOptions: {
+    reportDir: 'cypress/results/mochawesome',  
+    overwrite: false,
+    html: true,
+    json: false,
+  },
   e2e: {
     setupNodeEvents(on, _config) {
       // Implement node event listeners here
