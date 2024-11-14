@@ -11,7 +11,6 @@ Proyek ini adalah otomatisasi pengujian end-to-end menggunakan [Cypress](https:/
 - [Menjalankan Tes di GitHub Actions](#menjalankan-tes-di-github-actions)
 - [Konfigurasi Tambahan](#konfigurasi-tambahan)
 - [Laporan Tes](#laporan-tes)
-- [Catatan](#catatan)
 
 ## Persyaratan
 
