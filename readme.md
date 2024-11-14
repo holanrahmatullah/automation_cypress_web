@@ -41,7 +41,9 @@ Proyek ini adalah otomatisasi pengujian end-to-end menggunakan [Cypress](https:/
 
 ## Struktur Proyek
 
+```
 ├── cypress/ │ ├── fixtures/ # Data uji dalam format JSON │ ├── integration/ # Tes spesifikasi Cypress │ ├── screenshots/ # Screenshot hasil tes │ ├── videos/ # Video hasil tes │ └── results/ # Laporan hasil tes (dari Mochawesome) └── cypress.config.js # Konfigurasi Cypress
+```
 
 ## Menjalankan Tes
 
