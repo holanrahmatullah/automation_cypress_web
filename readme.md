@@ -45,6 +45,7 @@ Proyek ini adalah otomatisasi pengujian end-to-end menggunakan [Cypress](https:/
 
 ```bash
 ├── cypress/
+│   ├── e2e/              # Script Test
 │   ├── fixtures/         # Data uji dalam format JSON
 │   ├── integration/      # Tes spesifikasi Cypress
 │   ├── screenshots/      # Screenshot hasil tes
@@ -97,6 +98,7 @@ module.exports = {
     },
   },
 };
+```
 
 ## Laporan Tes
 
@@ -111,4 +113,4 @@ Jika Anda ingin menambahkan dukungan untuk laporan lebih lanjut, Anda bisa memod
     "reportDir": "cypress/results"
   }
 }
-
+```
