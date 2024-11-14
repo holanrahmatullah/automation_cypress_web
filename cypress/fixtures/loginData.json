@@ -1,0 +1,26 @@
+[
+    {
+      "email": "testing1@gmail.com",
+      "password": "asda"
+    }, {
+      "email": "testing2@gmail.com",
+      "password": "asda"
+    },
+    {
+      "email": "testing3@gmail.com",
+      "password": "asda"
+    },
+    {
+      "email": "testing4@gmail.com",
+      "password": "asda"
+    },
+    {
+      "email": "testing5@gmail.com",
+      "password": "asda"
+    },
+    {
+      "email": "testing6@gmail.com",
+      "password": "asda"
+    }
+
+  ]

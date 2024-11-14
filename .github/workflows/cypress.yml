@@ -1,0 +1,51 @@
+name: Cypress Tests
+
+on:
+  push:
+    branches:
+      - main  # Menjalankan workflow hanya saat ada perubahan pada branch main
+      - master
+  pull_request:
+    branches:
+      - main  # Menjalankan workflow saat ada PR ke branch main
+      - master
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest  # Menggunakan runner Ubuntu untuk menjalankan tests
+
+    steps:
+    # Checkout repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Setup Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Versi Node.js yang akan digunakan
+
+    # Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Jalankan Cypress tests
+    - name: Run Cypress tests
+      run: npm run e2e  # Menjalankan pengujian Cypress
+
+    # Upload artifacts (screenshot dan video dari Cypress)
+    - name: Upload screenshots and videos
+      uses: actions/upload-artifact@v3
+      with:
+        name: cypress-artifacts
+        path: |
+          cypress/screenshots
+          cypress/videos
+
+    # Laporan Mochawesome (Opsional, jika kamu menggunakan reporter)
+    - name: Upload Mochawesome report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: mochawesome-report
+        path: cypress/results/mochawesome/*.html

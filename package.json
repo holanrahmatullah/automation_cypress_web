@@ -1,0 +1,26 @@
+{
+  "name": "geting-started-web-cypress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint 'cypress/**/*.js'",
+    "e2e": "cypress run",
+    "e2e:open": "cypress open",
+    "e2e:testingonefile": "cypress run --spec 'cypress/e2e/login.cy.js'"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.7.0",
+    "cypress-dotenv": "^2.0.0",
+    "cypress-iframe": "^1.0.1",
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-cypress": "^4.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3"
+  }
+}
