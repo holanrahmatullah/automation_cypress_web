@@ -11,7 +11,7 @@ describe('Login Page', () => {
     cy.get('input#email').type('holanrahmatullah@gmail.com');
     cy.get('input#password').type('Warouw1945@');
     cy.get('#buttonLoginTrack').click();
-    cy.get('div#navbar-collapse-1 a > i').should('exist');
+    cy.get('.logo-name').should('exist');
 
   });
 
