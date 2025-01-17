@@ -3,16 +3,16 @@ name: Cypress Tests
 on:
   push:
     branches:
-      - main  # Menjalankan workflow hanya saat ada perubahan pada branch main
+      - main
       - master
   pull_request:
     branches:
-      - main  # Menjalankan workflow saat ada PR ke branch main
+      - main
       - master
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest  # Menggunakan runner Ubuntu untuk menjalankan tests
+    runs-on: ubuntu-latest
 
     steps:
     # Checkout repository
@@ -31,16 +31,38 @@ jobs:
 
     # Jalankan Cypress tests
     - name: Run Cypress tests
-      run: npm run e2e  # Menjalankan pengujian Cypress
+      run: npm run e2e
 
-    # Membuat zip dari seluruh folder results (termasuk screenshot, video, dan laporan)
-    - name: Create zip of Cypress results
+    # Generate HTML Report (pastikan Anda menggunakan plugin seperti cypress-mochawesome-reporter)
+    - name: Generate Cypress HTML report
       run: |
-        zip -r cypress-results.zip cypress/results
+        npx mochawesome-merge cypress/results/*.json > mochawesome.json
+        npx mochawesome-report-generator mochawesome.json --reportDir cypress/reports
 
-    # Upload artifact berupa zip file
-    - name: Upload Cypress results as artifact
+    # Upload artifact berupa laporan HTML
+    - name: Upload Cypress HTML report
       uses: actions/upload-artifact@v3
       with:
-        name: cypress-results
-        path: cypress-results.zip
+        name: cypress-report
+        path: cypress/reports
+
+  deploy-pages:
+    needs: cypress-run
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Ambil laporan dari job sebelumnya
+    - name: Download report artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: cypress-report
+
+    # Deploy ke GitHub Pages
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v2
+      with:
+        path: cypress/reports

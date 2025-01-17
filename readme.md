@@ -113,3 +113,7 @@ Jika Anda ingin menambahkan dukungan untuk laporan lebih lanjut, Anda bisa memod
   }
 }
 ```
+
+## Test Report Link
+[Automation Cypress Web Report](https://holanrahmatullah.github.io/automation-cypress_web/)
+
