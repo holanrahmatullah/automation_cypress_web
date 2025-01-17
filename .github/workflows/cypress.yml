@@ -29,9 +29,9 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # Jalankan Cypress tests tanpa flag Vulkan
+    # Jalankan Cypress tests dengan Chrome headless
     - name: Run Cypress tests
-      run: npx cypress run --browser chrome --headless --use-gl=swiftshader
+      run: npx cypress run --browser chrome --headless
 
     # Generate HTML Report (pastikan Anda menggunakan plugin seperti cypress-mochawesome-reporter)
     - name: Generate Cypress HTML report
