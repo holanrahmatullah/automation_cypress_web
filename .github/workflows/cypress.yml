@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: Cypress Tests New
 
 on:
   push:
@@ -33,18 +33,12 @@ jobs:
     - name: Run Cypress tests
       run: npx cypress run --browser chrome --headless
 
-    # Generate HTML Report
-    - name: Generate Cypress HTML report
-      run: |
-        npx mochawesome-merge cypress/results/*.json > mochawesome.json
-        npx mochawesome-report-generator mochawesome.json --reportDir cypress/reports
-
     # Upload artifact berupa laporan HTML
     - name: Upload Cypress HTML report
       uses: actions/upload-artifact@v3
       with:
         name: cypress-report
-        path: cypress/reports
+        path: cypress/reports/*.html
 
   deploy-pages:
     needs: cypress-run
