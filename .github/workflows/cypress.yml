@@ -50,7 +50,7 @@ jobs:
   deploy-pages:
     needs: cypress-run
     runs-on: ubuntu-latest
-    permissions:  # Menambahkan izin untuk deploy-pages
+    permissions:
       contents: write
       pages: write
       id-token: write
@@ -66,10 +66,6 @@ jobs:
       with:
         name: cypress-report
 
-    # Membuat direktori sebelum unzip
-    - name: Create directory for extraction
-      run: mkdir -p cypress/results/mochawesome/
-
     # Unzip hasil laporan untuk validasi
     - name: Extract Cypress report
       run: unzip cypress-results.zip -d cypress/results/mochawesome/
@@ -82,4 +78,4 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v2
       with:
-        path: cypress/results/mochawesome/
+        artifact_name: cypress-report
