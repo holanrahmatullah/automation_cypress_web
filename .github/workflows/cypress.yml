@@ -1,46 +1,52 @@
-name: Cypress Tests
+name: Cypress Tests with GitHub Pages
 
 on:
   push:
-    branches:
-      - main  # Menjalankan workflow hanya saat ada perubahan pada branch main
-      - master
+    branches: [main, master]
   pull_request:
-    branches:
-      - main  # Menjalankan workflow saat ada PR ke branch main
-      - master
+    branches: [main, master]
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest  # Menggunakan runner Ubuntu untuk menjalankan tests
-
+    runs-on: ubuntu-latest
     steps:
-    # Checkout repository
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # Setup Node.js
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      # Setup Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
 
-    # Install dependencies
-    - name: Install dependencies
-      run: npm install
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
-    # Jalankan Cypress tests
-    - name: Run Cypress tests
-      run: npm run e2e  # Menjalankan pengujian Cypress
+      # Install Cypress browsers dependencies
+      - name: Install Cypress dependencies
+        run: npx cypress install --force
 
-    # Membuat zip dari seluruh folder results (termasuk screenshot, video, dan laporan)
-    - name: Create zip of Cypress results
-      run: |
-        zip -r cypress-results.zip cypress/results
+      # Run Cypress tests
+      - name: Run Cypress tests
+        run: npx cypress run --browser chrome --headless
 
-    # Upload artifact berupa zip file
-    - name: Upload Cypress results as artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: cypress-results
-        path: cypress-results.zip
+      # Create Cypress Mochawesome report
+      - name: Create Mochawesome report
+        run: |
+          mkdir -p gh-pages
+          cp -R cypress/results/mochawesome/* gh-pages/
+          touch gh-pages/.nojekyll
+
+      # Deploy Cypress report to GitHub Pages
+      - name: Deploy to GitHub Pages
+        run: |
+          git -C gh-pages init
+          git -C gh-pages config user.name "github-actions[bot]"
+          git -C gh-pages config user.email "github-actions[bot]@users.noreply.github.com"
+          git -C gh-pages add .
+          git -C gh-pages commit -m "Deploy Cypress report"
+          git -C gh-pages branch -M gh-pages
+          git -C gh-pages remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git -C gh-pages push -f origin gh-pages
