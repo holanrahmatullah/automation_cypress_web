@@ -33,9 +33,14 @@ jobs:
     - name: Run Cypress tests
       run: npx cypress run --browser chrome --headless
 
+    # Debug lokasi file laporan
+    - name: Debug report folder
+      run: ls -la cypress/reports/
+
     # Upload artifact berupa laporan HTML
     - name: Upload Cypress HTML report
       uses: actions/upload-artifact@v3
+      if: ${{ always() }}
       with:
         name: cypress-report
         path: cypress/reports/*.html
@@ -54,6 +59,10 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: cypress-report
+
+    # Validasi laporan sebelum deploy
+    - name: Validate report
+      run: test -d cypress/reports && test "$(ls -A cypress/reports)"
 
     # Deploy ke GitHub Pages
     - name: Deploy to GitHub Pages
