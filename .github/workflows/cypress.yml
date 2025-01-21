@@ -62,6 +62,10 @@ jobs:
       with:
         name: cypress-report
 
+    # Membuat direktori sebelum unzip
+    - name: Create directory for extraction
+      run: mkdir -p cypress/results/mochawesome/
+
     # Unzip hasil laporan untuk validasi
     - name: Extract Cypress report
       run: unzip cypress-results.zip -d cypress/results/mochawesome/
