@@ -15,37 +15,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout repository
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Setup Node.js
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      # Setup Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    # Install dependencies
-    - name: Install dependencies
-      run: npm install
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
 
-    # Jalankan Cypress tests dan hasilkan laporan Mochawesome
-    - name: Run Cypress tests with Mochawesome
-      run: |
-        npx cypress run --browser chrome --headless
-        zip -r cypress-results.zip cypress/results/mochawesome/
+      # Jalankan Cypress tests dan hasilkan laporan Mochawesome
+      - name: Run Cypress tests with Mochawesome
+        run: |
+          npx cypress run --browser chrome --headless
+          zip -r cypress-results.zip cypress/results/mochawesome/
 
-    # Debug lokasi hasil laporan
-    - name: Debug report folder
-      run: ls -la cypress/results/mochawesome/
+      # Debug lokasi hasil laporan
+      - name: Debug report folder
+        run: ls -la cypress/results/mochawesome/ || echo "Directory not found"
 
-    # Upload artifact berupa laporan hasil pengujian
-    - name: Upload Cypress Mochawesome report
-      uses: actions/upload-artifact@v3
-      if: ${{ always() }}
-      with:
-        name: cypress-report
-        path: cypress-results.zip
+      # Upload artifact berupa laporan hasil pengujian
+      - name: Upload Cypress Mochawesome report
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: cypress-report
+          path: cypress-results.zip
 
   deploy-pages:
     needs: cypress-run
@@ -56,26 +56,30 @@ jobs:
       id-token: write
 
     steps:
-    # Checkout repository
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Download artifact dari job sebelumnya
-    - name: Download Cypress report
-      uses: actions/download-artifact@v3
-      with:
-        name: cypress-report
+      # Download artifact dari job sebelumnya
+      - name: Download Cypress report
+        uses: actions/download-artifact@v3
+        with:
+          name: cypress-report
 
-    # Unzip hasil laporan untuk validasi
-    - name: Extract Cypress report
-      run: unzip cypress-results.zip -d cypress/results/mochawesome/
+      # Buat direktori untuk hasil unzip jika belum ada
+      - name: Create results directory
+        run: mkdir -p cypress/results/mochawesome/
 
-    # Debug hasil unzip
-    - name: Debug extracted results
-      run: ls -la cypress/results/mochawesome/
+      # Unzip hasil laporan untuk validasi
+      - name: Extract Cypress report
+        run: unzip cypress-results.zip -d cypress/results/mochawesome/
 
-    # Deploy laporan ke GitHub Pages
-    - name: Deploy to GitHub Pages
-      uses: actions/deploy-pages@v2
-      with:
-        artifact_name: cypress-report
+      # Debug hasil unzip
+      - name: Debug extracted results
+        run: ls -la cypress/results/mochawesome/
+
+      # Deploy laporan ke GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: cypress-report
