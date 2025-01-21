@@ -1,4 +1,4 @@
-name: Cypress Tests New
+name: Cypress Tests with Report
 
 on:
   push:
@@ -29,15 +29,19 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # Jalankan Cypress tests dengan Chrome headless
+    # Create reports folder (in case it doesn't exist)
+    - name: Create reports folder
+      run: mkdir -p cypress/reports/
+
+    # Run Cypress tests with mochawesome reporter
     - name: Run Cypress tests
       run: npx cypress run --browser chrome --headless
 
-    # Debug lokasi file laporan
+    # Debug report folder
     - name: Debug report folder
       run: ls -la cypress/reports/
 
-    # Upload artifact berupa laporan HTML
+    # Upload artifact (HTML report)
     - name: Upload Cypress HTML report
       uses: actions/upload-artifact@v3
       if: ${{ always() }}
@@ -54,17 +58,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Ambil laporan dari job sebelumnya
+    # Download artifact from previous job
     - name: Download report artifact
       uses: actions/download-artifact@v3
       with:
         name: cypress-report
 
-    # Validasi laporan sebelum deploy
+    # Validate report before deploy
     - name: Validate report
       run: test -d cypress/reports && test "$(ls -A cypress/reports)"
 
-    # Deploy ke GitHub Pages
+    # Deploy report to GitHub Pages
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v2
       with:
