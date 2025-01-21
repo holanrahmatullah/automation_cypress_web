@@ -50,6 +50,10 @@ jobs:
   deploy-pages:
     needs: cypress-run
     runs-on: ubuntu-latest
+    permissions:  # Menambahkan izin untuk deploy-pages
+      contents: write
+      pages: write
+      id-token: write
 
     steps:
     # Checkout repository
