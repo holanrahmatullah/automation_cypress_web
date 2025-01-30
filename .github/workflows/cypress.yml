@@ -10,36 +10,102 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      # Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Setup Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '16'
 
-      # Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Install Cypress browsers dependencies
       - name: Install Cypress dependencies
         run: npx cypress install --force
 
-      # Run Cypress tests
+      # Set environment variables from GitHub Secrets
+      - name: Set Environment Variables
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "BASE_URL_THE_INTERNET_HEROKU=${{ secrets.BASE_URL_THE_INTERNET_HEROKU }}" >> $GITHUB_ENV
+          echo "USERNAME_USER=${{ secrets.USERNAME_USER }}" >> $GITHUB_ENV
+          echo "PASSWORD_USER=${{ secrets.PASSWORD_USER }}" >> $GITHUB_ENV
+
+      # Run Cypress tests with environment variables
       - name: Run Cypress tests
         run: npx cypress run --browser chrome --headless
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          BASE_URL_THE_INTERNET_HEROKU: ${{ secrets.BASE_URL_THE_INTERNET_HEROKU }}
+          USERNAME_USER: ${{ secrets.USERNAME_USER }}
+          PASSWORD_USER: ${{ secrets.PASSWORD_USER }}
 
-      # Create Cypress Mochawesome report
       - name: Create Mochawesome report
         run: |
           mkdir -p gh-pages
           cp -R cypress/results/mochawesome/* gh-pages/
           touch gh-pages/.nojekyll
 
-      # Deploy Cypress report to GitHub Pages
+      - name: Deploy to GitHub Pages
+        run: |
+          git -C gh-pages init
+          git -C gh-pages config user.name "github-actions[bot]"
+          git -C gh-pages config user.email "github-actions[bot]@users.noreply.github.com"
+          git -C gh-pages add .
+          git -C gh-pages commit -m "Deploy Cypress report"
+          git -C gh-pages branch -M gh-pages
+          git -C gh-pages remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git -C gh-pages push -f origin gh-pages
+name: Cypress Tests with GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Cypress dependencies
+        run: npx cypress install --force
+
+      # Set environment variables from GitHub Secrets
+      - name: Set Environment Variables
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "BASE_URL_THE_INTERNET_HEROKU=${{ secrets.BASE_URL_THE_INTERNET_HEROKU }}" >> $GITHUB_ENV
+          echo "USERNAME_USER=${{ secrets.USERNAME_USER }}" >> $GITHUB_ENV
+          echo "PASSWORD_USER=${{ secrets.PASSWORD_USER }}" >> $GITHUB_ENV
+
+      # Run Cypress tests with environment variables
+      - name: Run Cypress tests
+        run: npx cypress run --browser chrome --headless
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          BASE_URL_THE_INTERNET_HEROKU: ${{ secrets.BASE_URL_THE_INTERNET_HEROKU }}
+          USERNAME_USER: ${{ secrets.USERNAME_USER }}
+          PASSWORD_USER: ${{ secrets.PASSWORD_USER }}
+
+      - name: Create Mochawesome report
+        run: |
+          mkdir -p gh-pages
+          cp -R cypress/results/mochawesome/* gh-pages/
+          touch gh-pages/.nojekyll
+
       - name: Deploy to GitHub Pages
         run: |
           git -C gh-pages init
