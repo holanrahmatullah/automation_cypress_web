@@ -32,21 +32,29 @@ jobs:
           echo "USERNAME_USER=${{ secrets.USERNAME_USER }}" >> $GITHUB_ENV
           echo "PASSWORD_USER=${{ secrets.PASSWORD_USER }}" >> $GITHUB_ENV
 
-      # Run Cypress tests with environment variables
-      - name: Run Cypress tests
-        run: npx cypress run --browser chrome --headless
-        env:
-          BASE_URL: ${{ secrets.BASE_URL }}
-          BASE_URL_THE_INTERNET_HEROKU: ${{ secrets.BASE_URL_THE_INTERNET_HEROKU }}
-          USERNAME_USER: ${{ secrets.USERNAME_USER }}
-          PASSWORD_USER: ${{ secrets.PASSWORD_USER }}
+      # Debugging Step: Check if environment variables are set correctly
+      - name: Debug Environment Variables
+        run: |
+          echo "Checking environment variables..."
+          echo "BASE_URL: $BASE_URL"
+          echo "BASE_URL_THE_INTERNET_HEROKU: $BASE_URL_THE_INTERNET_HEROKU"
+          echo "USERNAME_USER: $USERNAME_USER"
+          echo "PASSWORD_USER: $PASSWORD_USER"
 
+      # Run Cypress tests with headless Chrome
+      - name: Run Cypress tests
+        run: |
+          set -x  # Enable debugging mode
+          npx cypress run --browser chrome --headless
+
+      # Generate Mochawesome test report
       - name: Create Mochawesome report
         run: |
           mkdir -p gh-pages
           cp -R cypress/results/mochawesome/* gh-pages/
           touch gh-pages/.nojekyll
 
+      # Deploy report to GitHub Pages
       - name: Deploy to GitHub Pages
         run: |
           git -C gh-pages init
