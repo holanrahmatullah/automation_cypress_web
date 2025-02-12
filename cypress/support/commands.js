@@ -11,7 +11,7 @@ Cypress.Commands.add('clickLogin', (element) =>{
     cy.viewport(1280, 800);
     cy.visit(element);
     cy.url().should('eq', base_url);
-    cy.get('div#navbar-collapse-1 li:nth-child(7) > a').click('');
+    cy.get('#navbar-collapse-1 > .nav > [style="width: max-content;font-size:16px;"] > a').click('');
     cy.get('h1 > span').contains('Masuk');
     cy.get('h1 > span').should('have.text', 'Masuk');
     cy.get('input#email').type(username_user);
