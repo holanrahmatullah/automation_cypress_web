@@ -5,7 +5,7 @@ const password_user = Cypress.env('PASSWORD_USER');
 describe('Login Page', () => {
   it('Success Login with Valid Email  dan Password ', () => {
     cy.viewport(1280, 800);
-    cy.visit(base_url);
+    cy.visit('https://coding.id/');
     cy.url().should('eq', base_url);
     cy.log(`${base_url} Testing Holan`);
     cy.get('div#navbar-collapse-1 li:nth-child(7) > a').click('');
