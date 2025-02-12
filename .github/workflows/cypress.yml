@@ -46,15 +46,6 @@ jobs:
         run: |
           set -x  # Enable debugging mode
           npx cypress run --browser chrome --headless
-          
-      - name: Debug Environment Variables (TEMPORARY)
-        run: |
-          set -x  # Aktifkan debug mode
-          echo "BASE_URL=${BASE_URL}"
-          echo "BASE_URL_THE_INTERNET_HEROKU=${BASE_URL_THE_INTERNET_HEROKU}"
-          echo "USERNAME_USER=${USERNAME_USER}"
-          echo "PASSWORD_USER=${PASSWORD_USER}"
-        shell: bash
 
       # Generate Mochawesome test report
       - name: Create Mochawesome report
