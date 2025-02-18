@@ -45,7 +45,7 @@ jobs:
       - name: Run Cypress tests
         run: |
           set -x  # Enable debugging mode
-          npx cypress run --browser chrome --headless
+          npx cypress run --browser edge --headless
 
       # Generate Mochawesome test report
       - name: Create Mochawesome report
