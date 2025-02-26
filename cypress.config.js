@@ -29,7 +29,9 @@ module.exports = defineConfig({
   },
   env: {
     BASE_URL: process.env.BASE_URL, 
-    BASE_URL_THE_INTERNET_HEROKU: process.env.BASE_URL_THE_INTERNET_HEROKU, 
+    BASE_URL_THE_INTERNET_HEROKU: process.env.BASE_URL_THE_INTERNET_HEROKU,
+    USERNAME_USER: process.env.USERNAME_USER, 
+    PASSWORD_USER: process.env.PASSWORD_USER, 
     
   },
   chromeWebSecurity: false

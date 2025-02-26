@@ -26,7 +26,7 @@ describe('Testing With Data Driven Testing', () => {
         cy.viewport(1280, 800);
         cy.visit(base_url);
         cy.url().should('eq', base_url);
-        cy.get('div#navbar-collapse-1 li:nth-child(7) > a').click('');
+        cy.get('#navbar-collapse-1 > .nav > [style="width: max-content;font-size:16px;"] > a').click('');
         cy.get('h1 > span').contains('Masuk');
         cy.get('h1 > span').should('have.text', 'Masuk'); // asertation
         cy.get('input#email').type(userData.email);

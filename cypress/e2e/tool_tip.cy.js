@@ -4,7 +4,7 @@ describe('Login Test', () => {
   it('Invalid Login With assertation tool tip', () => {
     cy.viewport(1280, 800);
     cy.visit(base_url);
-    cy.get(':nth-child(8) > form > .buttonBanner').click();
+    cy.get(':nth-child(7) > form > .buttonBanner').click();
     cy.get('#name').type('testing');
     cy.get(':nth-child(3) > .col-md-8 > .form-control')
       .type('04-Aug-1969')
